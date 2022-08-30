@@ -12,7 +12,12 @@
     "linkcheck": "yarn ts-node _tools/linkcheck.ts",
     "compare-chains-metadata": "npx ts-node _src/chains-metadata.ts",
     "format:check": "prettier --check .",
-    "format:fix": "prettier --write ."
+    "format:fix": "prettier --write .",
+    "lint": "yarn eslint .",
+    "lint:fix": "yarn lint --fix",
+    "lint-ts": "eslint --ext ts .",
+    "lint-ts:fix": "yarn lint-ts --fix",
+    "lint-solc": "solhint '_includes/samples/**/*.sol'"
   },
   "keywords": [
     "chainlink",
@@ -58,7 +63,13 @@
   "engineStrict": true,
   "devDependencies": {
     "@types/lodash": "^4.14.182",
+    "@typescript-eslint/eslint-plugin": "^5.36.1",
+    "@typescript-eslint/parser": "^5.36.1",
+    "eslint": "^8.23.0",
+    "eslint-config-prettier": "^8.5.0",
     "prettier": "^2.7.1",
-    "prettier-plugin-solidity": "^1.0.0-beta.24"
+    "prettier-plugin-solidity": "^1.0.0-beta.24",
+    "solhint": "^3.3.7",
+    "solhint-plugin-prettier": "^0.0.5"
   }
 }
