@@ -2,20 +2,23 @@
 layout: nodes.liquid
 section: nodeOperator
 date: Last Modified
-title: "Miscellaneous"
-permalink: "docs/miscellaneous/"
-whatsnext: {"Security and Operation Best Practices":"/docs/best-security-practices/"}
+title: 'Miscellaneous'
+permalink: 'docs/miscellaneous/'
+whatsnext: { 'Security and Operation Best Practices': '/docs/best-security-practices/' }
 ---
+
 ## Execute Commands Running Docker
 
 In order to interact with the node's CLI commands, you need to be authenticated. This means that you need to access a shell within the Chainlink node's running container first. You can obtain the running container's `NAME` by running:
 
+<!-- prettier-ignore -->
 ```shell
 docker ps
 ```
 
 The output will look similar to:
 
+<!-- prettier-ignore -->
 ```
 CONTAINER ID        IMAGE                     COMMAND                  CREATED             STATUS              PORTS                              NAMES
 436882efd51d        smartcontract/chainlink   "./chainlink-launche…"   33 minutes ago      Up 21 minutes       6688/tcp, 0.0.0.0:6688->6688/tcp   chainlink
@@ -23,30 +26,35 @@ CONTAINER ID        IMAGE                     COMMAND                  CREATED  
 
 The last item, `chainlink`, is the name of the running container (using `--name chainlink` in your `docker run` command will give you a common name). Accessing a shell for this container is accomplished by running:
 
+<!-- prettier-ignore -->
 ```shell
 docker exec -it chainlink /bin/bash
 ```
 
 This changes the prompt to something similar to:
 
+<!-- prettier-ignore -->
 ```shell
 root@436882efd51d:~#
 ```
 
 You can now log in by running:
 
+<!-- prettier-ignore -->
 ```shell
 chainlink admin login
 ```
 
 You will be prompted to enter your API Email and Password, and if successful, the prompt will simply appear again. You can check that you are authenticated by running:
 
+<!-- prettier-ignore -->
 ```shell
 chainlink jobs list
 ```
 
 If no jobs have been added, you will receive the following output, otherwise, the list of added jobs will be returned:
 
+<!-- prettier-ignore -->
 ```
 ╔ Jobs
 ╬════╬════════════╬════════════╬═══════╬
@@ -60,6 +68,7 @@ If no jobs have been added, you will receive the following output, otherwise, th
 
 To transfer funds from the node wallet to another address, use the following CLI command:
 
+<!-- prettier-ignore -->
 ```shell
 chainlink txs create <amount> <your-cl-node-address> <send-to-address>
 ```
@@ -72,6 +81,7 @@ This method is the preferred way to interact with your node wallet. Using other 
 
 In order to change your password, you first need to log into the CLI by running:
 
+<!-- prettier-ignore -->
 ```shell
 chainlink admin login
 ```
@@ -80,6 +90,7 @@ Use your API email and old password in order to authenticate.
 
 Then run the following in order to update the password:
 
+<!-- prettier-ignore -->
 ```shell
 chainlink admin chpass
 ```
@@ -87,7 +98,6 @@ chainlink admin chpass
 It will ask for your old password first, then ask for the new password and a confirmation.
 
 Once complete, you should see a message "Password updated."
-
 
 ## Multi-user and Role Based Access Control (RBAC)
 
@@ -99,66 +109,67 @@ If there are multiple users who need specific access to manage the Chainlink Nod
 
 User management is configured through the use of the admin `chainlink admin users` command. Run `chainlink adamin login` before you set user roles for other accounts. For example, a read-only user can be created with the following command:
 
+<!-- prettier-ignore -->
 ```shell
 chainlink admin users create --email=operator-ui-read-only@test.com --role=view
 ```
 
 Specific actions are enabled to check role-based access before they execute. The following table lists the actions that have role-based access and the role that is required to run that action:
 
-| Action | Read | Run | Run | Admin |
-|:--- | :---: | :---: | :---: | :---: |
-| Update password  | X | X | X | X |
-| Create self API token  | X | X | X | X |
-| Delete self API token  | X | X | X | X |
-| List external initiators  | X | X | X | X |
-| Create external initiator  |   |   | X | X |
-| Delete external initiator  |   |   | X | X |
-| List bridges  | X | X | X | X |
-| View bridge  | X | X | X | X |
-| Create bridge  |   |   | X | X |
-| Edit bridge  |   |   | X | X |
-| Delete bridge  |   |   | X | X |
-| View config  | X | X | X | X |
-| Update config  |   |   |   | X |
-| Dump env/config  |   |   |   | X |
-| View transaction attempts  | X | X | X | X |
-| View transaction attempts EVM  | X | X | X | X |
-| View transactions  | X | X | X | X |
-| Replay a specific block number  |  | X | X | X |
-| List keys (CSA,ETH,OCR(2),P2P,Solana,Terra)  | X | X | X | X |
-| Create keys (CSA,ETH,OCR(2),P2P,Solana,Terra)  |   |   | X | X |
-| Delete keys (CSA,ETH,OCR(2),P2P,Solana,Terra)  |   |   |   | X |
-| Import keys (CSA,ETH,OCR(2),P2P,Solana,Terra)  |   |   |   | X |
-| Export keys (CSA,ETH,OCR(2),P2P,Solana,Terra)  |   |   |   | X |
-| List jobs | X | X | X | X |
-| View job | X | X | X | X |
-| Create job |  |  | X | X |
-| Delete job |  |   | X | X |
-| List pipeline runs | X | X | X | X |
-| View job runs | X | X | X | X |
-| Delete job spec errors |  |  | X | X |
-| View features | X | X | X | X |
-| View log | X | X | X | X |
-| Update log |   |   |   | X |
-| List chains | X | X | X | X |
-| View chain | X | X | X | X |
-| Create chain |   |   | X | X |
-| Update chain |   |   | X | X |
-| Delete chain |   |   | X | X |
-| View nodes | X | X | X | X |
-| Create node |  |  | X | X |
-| Update node |  |  | X | X |
-| Delete node |  |  | X | X |
-| View forwarders | X | X | X | X |
-| Create forwarder |   |   | X | X |
-| Delete forwarder |   |   | X | X |
-| Create job run |   | X | X | X |
-| Create Transfer EVM  |   |   |   | X |
-| Create Transfer Terra  |   |   |   | X |
-| Create Transfer Solana  |   |   |   | X |
-| Create user  |   |   |   | X |
-| Delete user  |   |   |   | X |
-| Edit user  |   |   |   | X |
+| Action                                        | Read | Run | Run | Admin |
+| :-------------------------------------------- | :--: | :-: | :-: | :---: |
+| Update password                               |  X   |  X  |  X  |   X   |
+| Create self API token                         |  X   |  X  |  X  |   X   |
+| Delete self API token                         |  X   |  X  |  X  |   X   |
+| List external initiators                      |  X   |  X  |  X  |   X   |
+| Create external initiator                     |      |     |  X  |   X   |
+| Delete external initiator                     |      |     |  X  |   X   |
+| List bridges                                  |  X   |  X  |  X  |   X   |
+| View bridge                                   |  X   |  X  |  X  |   X   |
+| Create bridge                                 |      |     |  X  |   X   |
+| Edit bridge                                   |      |     |  X  |   X   |
+| Delete bridge                                 |      |     |  X  |   X   |
+| View config                                   |  X   |  X  |  X  |   X   |
+| Update config                                 |      |     |     |   X   |
+| Dump env/config                               |      |     |     |   X   |
+| View transaction attempts                     |  X   |  X  |  X  |   X   |
+| View transaction attempts EVM                 |  X   |  X  |  X  |   X   |
+| View transactions                             |  X   |  X  |  X  |   X   |
+| Replay a specific block number                |      |  X  |  X  |   X   |
+| List keys (CSA,ETH,OCR(2),P2P,Solana,Terra)   |  X   |  X  |  X  |   X   |
+| Create keys (CSA,ETH,OCR(2),P2P,Solana,Terra) |      |     |  X  |   X   |
+| Delete keys (CSA,ETH,OCR(2),P2P,Solana,Terra) |      |     |     |   X   |
+| Import keys (CSA,ETH,OCR(2),P2P,Solana,Terra) |      |     |     |   X   |
+| Export keys (CSA,ETH,OCR(2),P2P,Solana,Terra) |      |     |     |   X   |
+| List jobs                                     |  X   |  X  |  X  |   X   |
+| View job                                      |  X   |  X  |  X  |   X   |
+| Create job                                    |      |     |  X  |   X   |
+| Delete job                                    |      |     |  X  |   X   |
+| List pipeline runs                            |  X   |  X  |  X  |   X   |
+| View job runs                                 |  X   |  X  |  X  |   X   |
+| Delete job spec errors                        |      |     |  X  |   X   |
+| View features                                 |  X   |  X  |  X  |   X   |
+| View log                                      |  X   |  X  |  X  |   X   |
+| Update log                                    |      |     |     |   X   |
+| List chains                                   |  X   |  X  |  X  |   X   |
+| View chain                                    |  X   |  X  |  X  |   X   |
+| Create chain                                  |      |     |  X  |   X   |
+| Update chain                                  |      |     |  X  |   X   |
+| Delete chain                                  |      |     |  X  |   X   |
+| View nodes                                    |  X   |  X  |  X  |   X   |
+| Create node                                   |      |     |  X  |   X   |
+| Update node                                   |      |     |  X  |   X   |
+| Delete node                                   |      |     |  X  |   X   |
+| View forwarders                               |  X   |  X  |  X  |   X   |
+| Create forwarder                              |      |     |  X  |   X   |
+| Delete forwarder                              |      |     |  X  |   X   |
+| Create job run                                |      |  X  |  X  |   X   |
+| Create Transfer EVM                           |      |     |     |   X   |
+| Create Transfer Terra                         |      |     |     |   X   |
+| Create Transfer Solana                        |      |     |     |   X   |
+| Create user                                   |      |     |     |   X   |
+| Delete user                                   |      |     |     |   X   |
+| Edit user                                     |      |     |     |   X   |
 
 The run command allows for minimal interaction and only enables the ability to replay a specific block number and kick off a job run.
 
@@ -166,6 +177,7 @@ The run command allows for minimal interaction and only enables the ability to r
 
 Instead of allowing Docker to generate a name for your running container for you, you can provide a name with the `--name` option in your run command. For example, without the `--name` option, `docker ps` could reveal a name like:
 
+<!-- prettier-ignore -->
 ```
 ... NAMES
 ... cocky_austin
@@ -173,6 +185,7 @@ Instead of allowing Docker to generate a name for your running container for you
 
 However, if we add `--name chainlink` to our run command, `docker ps` gives us:
 
+<!-- prettier-ignore -->
 ```
 ... NAMES
 ... chainlink
@@ -180,27 +193,36 @@ However, if we add `--name chainlink` to our run command, `docker ps` gives us:
 
 This can be easily accomplished by using the following example run command:
 
+<!-- prettier-ignore -->
 ```shell Goerli
 cd ~/.chainlink-goerli && docker run --name chainlink -p 6688:6688 -v ~/.chainlink-goerli:/chainlink -it --env-file=.env smartcontract/chainlink local n
 ```
+
+<!-- prettier-ignore -->
 ```shell Rinkeby
 cd ~/.chainlink-rinkeby && docker run --name chainlink -p 6688:6688 -v ~/.chainlink-rinkeby:/chainlink -it --env-file=.env smartcontract/chainlink local n
 ```
+
+<!-- prettier-ignore -->
 ```shell Kovan
 cd ~/.chainlink-kovan && docker run --name chainlink -p 6688:6688 -v ~/.chainlink-kovan:/chainlink -it --env-file=.env smartcontract/chainlink local n
 ```
+
+<!-- prettier-ignore -->
 ```shell Mainnet
 cd ~/.chainlink && docker run --name chainlink -p 6688:6688 -v ~/.chainlink:/chainlink -it --env-file=.env smartcontract/chainlink local n
 ```
 
 Running this the once will save the options provided so that you may easily start the named container in the future by running:
 
+<!-- prettier-ignore -->
 ```shell
 docker start -i chainlink
 ```
 
 If you need to make changes to the run parameters or the environment file, first remove the named container by running:
 
+<!-- prettier-ignore -->
 ```shell
 docker rm chainlink
 ```
@@ -215,60 +237,88 @@ The Chainlink node can be supplied with files for the wallet password and API em
 >
 > Change the values within the quotes to something unique for your node.
 
+<!-- prettier-ignore -->
 ```shell Goerli
 echo "user@example.com" > ~/.chainlink-goerli/.api
 ```
+
+<!-- prettier-ignore -->
 ```shell Rinkeby
 echo "user@example.com" > ~/.chainlink-rinkeby/.api
 ```
+
+<!-- prettier-ignore -->
 ```shell Kovan
 echo "user@example.com" > ~/.chainlink-kovan/.api
 ```
+
+<!-- prettier-ignore -->
 ```shell Mainnet
 echo "user@example.com" > ~/.chainlink/.api
 ```
 
 Then add the password line by running:
 
+<!-- prettier-ignore -->
 ```shell Goerli
 echo "password" >> ~/.chainlink-goerli/.api
 ```
+
+<!-- prettier-ignore -->
 ```shell Rinkeby
 echo "password" >> ~/.chainlink-rinkeby/.api
 ```
+
+<!-- prettier-ignore -->
 ```shell Kovan
 echo "password" >> ~/.chainlink-kovan/.api
 ```
+
+<!-- prettier-ignore -->
 ```shell Mainnet
 echo "password" >> ~/.chainlink/.api
 ```
 
 Create the password file by running the following:
 
+<!-- prettier-ignore -->
 ```shell Goerli
 echo "my_wallet_password" > ~/.chainlink-goerli/.password
 ```
+
+<!-- prettier-ignore -->
 ```shell Rinkeby
 echo "my_wallet_password" > ~/.chainlink-rinkeby/.password
 ```
+
+<!-- prettier-ignore -->
 ```shell Kovan
 echo "my_wallet_password" > ~/.chainlink-kovan/.password
 ```
+
+<!-- prettier-ignore -->
 ```shell Mainnet
 echo "my_wallet_password" > ~/.chainlink/.password
 ```
 
 Finally, in order to use the password and API files upon running the node, add `-p /chainlink/.password -a /chainlink/.api` to your run command, like so:
 
+<!-- prettier-ignore -->
 ```shell Goerli
 cd ~/.chainlink-goerli && docker run -p 6688:6688 -v ~/.chainlink-goerli:/chainlink -it --env-file=.env smartcontract/chainlink local n -p /chainlink/.password -a /chainlink/.api
 ```
+
+<!-- prettier-ignore -->
 ```shell Rinkeby
 cd ~/.chainlink-rinkeby && docker run -p 6688:6688 -v ~/.chainlink-rinkeby:/chainlink -it --env-file=.env smartcontract/chainlink local n -p /chainlink/.password -a /chainlink/.api
 ```
+
+<!-- prettier-ignore -->
 ```shell Kovan
 cd ~/.chainlink-kovan && docker run -p 6688:6688 -v ~/.chainlink-kovan:/chainlink -it --env-file=.env smartcontract/chainlink local n -p /chainlink/.password -a /chainlink/.api
 ```
+
+<!-- prettier-ignore -->
 ```shell Mainnet
 cd ~/.chainlink && docker run -p 6688:6688 -v ~/.chainlink:/chainlink -it --env-file=.env smartcontract/chainlink local n -p /chainlink/.password -a /chainlink/.api
 ```
@@ -277,15 +327,16 @@ cd ~/.chainlink && docker run -p 6688:6688 -v ~/.chainlink:/chainlink -it --env-
 
 If you haven't ran the node before and want to import a key you can use the following command, where `./keystore.json` is the path to the keystore file of your account.
 
+<!-- prettier-ignore -->
 ```shell import
 chainlink local import ./keystore.json
 ```
 
 If there is already a key in your database and you want to import another key, you will need to make sure that the same password unlocks all accounts.
 
-
 ## Full example in detached mode
 
+<!-- prettier-ignore -->
 ```shell
 cd ~/.chainlink-goerli && docker run --restart=always  -p 6688:6688 -d --name goerli-primary -v ~/.chainlink-goerli:/chainlink -it --env-file=.env smartcontract/chainlink:1.0.0 local n -p /chainlink/.password
 ```
